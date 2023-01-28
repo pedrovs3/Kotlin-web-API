@@ -1,4 +1,4 @@
-package com.pedrovieira.bankapi
+package com.pedrovieira.bankapi.model
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
