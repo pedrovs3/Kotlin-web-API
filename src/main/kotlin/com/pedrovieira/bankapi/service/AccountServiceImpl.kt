@@ -9,8 +9,17 @@ import org.springframework.util.Assert
 @Service
 class AccountServiceImpl(private val repository: AccountRepository) : AccountService {
     override fun create(account: Account): Account {
+        // Verifications about name field
         Assert.hasLength(account.name, "[name] nao pode estar em branco!")
         Assert.isTrue(account.name.length >= 5, "[name] deve ter no mínimo 5 caracteres!")
+
+        // Verifications about document field
+        Assert.hasLength(account.document, "[document] nao pode estar em branco!")
+        Assert.isTrue(account.document.length >= 11, "[document] deve ter no mínimo 11 caracteres!")
+
+        // Verifications about phone field
+        Assert.hasLength(account.phone, "[phone] nao pode estar em branco!")
+        Assert.isTrue(account.phone.length >= 9, "[phone] deve ter no mínimo 9 caracteres!")
 
         return repository.save(account)
     }
