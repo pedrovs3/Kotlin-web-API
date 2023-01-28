@@ -4,6 +4,7 @@ import com.pedrovieira.bankapi.model.Account
 import java.util.*
 
 interface AccountService {
+
     fun create (account: Account): Account
 
     fun getAll() : List<Account>

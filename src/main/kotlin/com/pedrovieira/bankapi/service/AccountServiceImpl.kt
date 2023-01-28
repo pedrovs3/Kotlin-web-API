@@ -4,10 +4,12 @@ import com.pedrovieira.bankapi.model.Account
 import com.pedrovieira.bankapi.repository.AccountRepository
 import org.springframework.stereotype.Service
 import java.util.*
+import org.springframework.util.Assert
 
 @Service
 class AccountServiceImpl(private val repository: AccountRepository) : AccountService {
     override fun create(account: Account): Account {
+        Assert.hasLength(account.name, "[name] nao pode estar em branco!!")
         return repository.save(account)
     }
 

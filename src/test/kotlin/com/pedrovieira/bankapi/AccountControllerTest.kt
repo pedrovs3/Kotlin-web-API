@@ -101,5 +101,24 @@ class AccountControllerTest {
         Assertions.assertFalse(findById.isPresent)
     }
 
+    @Test
+    fun `test create account validation empty name`() {
+        val account = Account(name = "", document = "493.166.368-09", phone = "(11)98822-0443")
+        val json = ObjectMapper().writeValueAsString(account)
+        accountRepository.deleteAll()
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/accounts")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json))
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.statusCode").isNumber)
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.message").isString)
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.statusCode").value(400))
+            .andExpect(MockMvcResultMatchers.jsonPath("\$.message").value("[name] nao pode estar em branco!!"))
+            .andDo(MockMvcResultHandlers.print())
+
+    }
+
 
 }
