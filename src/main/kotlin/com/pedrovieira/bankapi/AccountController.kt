@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -17,19 +18,20 @@ import org.springframework.web.bind.annotation.RestController
 class AccountController (private val repository: AccountRepository) {
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     fun create (@RequestBody account: Account) = repository.save(account)
 
     @GetMapping
     fun getAll() : List<Account> = repository.findAll()
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id:Long) : ResponseEntity<Account> =
+    fun getById(@PathVariable id:String) : ResponseEntity<Account> =
         repository.findById(id).map {
             ResponseEntity.ok(it)
         }.orElse(ResponseEntity.notFound().build())
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long, @RequestBody account: Account) : ResponseEntity<Account> =
+    fun update(@PathVariable id: String, @RequestBody account: Account) : ResponseEntity<Account> =
         repository.findById(id).map {
             val accountToUpdate = it.copy(
                 name = account.name,
@@ -40,7 +42,7 @@ class AccountController (private val repository: AccountRepository) {
         }.orElse(ResponseEntity.notFound().build())
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long) : ResponseEntity<Void> =
+    fun delete(@PathVariable id: String) : ResponseEntity<Void> =
         repository.findById(id).map {
             repository.delete(it)
             ResponseEntity<Void>(HttpStatus.OK)
